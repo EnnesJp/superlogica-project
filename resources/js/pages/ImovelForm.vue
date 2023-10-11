@@ -1,10 +1,10 @@
 <template>
-    <div class="card text-center">
+    <div class="card">
         <div class="card-header">
-            Featured
+            {{ imovel ? 'Editando Imovel' : 'Cadastre um novo Imovel' }}
         </div>
         <div class="card-body">
-            <form @submit.prevent="createImovel()">
+            <form @submit.prevent="imovel ? editImovel() : createImovel()">
                 <div class="mb-3">
                     <label class="form-label">
                         Endereço
@@ -48,7 +48,9 @@
                         </option>
                     </select>
                 </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="submit" class="btn btn-primary">
+                    {{ imovel ? 'Salvar' : 'Finalizar Cadastro' }}
+                </button>
             </form>
         </div>
     </div>
@@ -70,6 +72,11 @@ export default {
   props: {
     errors: {
         type: Object,
+    },
+    imovel: {
+        type: Object,
+        required: false,
+        default: null
     }
   },
   data() {
@@ -113,8 +120,19 @@ export default {
   methods: {
     createImovel() {
         router.post('/imoveis', this.form)
+    },
+    editImovel() {
+        router.put(`/imoveis/${this.imovel.id}`, this.form)
+    },
+  },
+  mounted() {
+    if (this.imovel) {
+        this.form.endereco = this.imovel.endereco
+        this.form.preco = this.imovel.preco
+        this.form.tipo = this.imovel.tipo
+        this.form.status = this.imovel.status
     }
-  }
+  },
 }
 
 </script>

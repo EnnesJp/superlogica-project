@@ -15,12 +15,16 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('/', function () {
-    return Inertia::render('Home');
+// Route::get('/', function () {
+//     return Inertia::render('Home');
+// });
+
+Route::prefix('imoveis')->group(function () {
+    Route::get('/', [ImovelController::class, 'exibirImoveis'])->name('imoveis.index');
+    Route::post('/', [ImovelController::class, 'criarImovel']);
+    Route::put('/{imovel}', [ImovelController::class, 'atualizarImovel']);
+
+    Route::get('/create', [ImovelController::class, 'create']);
+    Route::delete('/{imovel}', [ImovelController::class, 'removerImovel']);
+    Route::get('/{imovel}/edit', [ImovelController::class, 'edit']);
 });
-
-Route::get('imoveis/create', [ImovelController::class, 'create']);
-
-Route::get('imoveis', [ImovelController::class, 'index'])->name('imoveis.index');
-Route::post('imoveis', [ImovelController::class, 'store']);
-
