@@ -94,7 +94,7 @@ export default {
             tipo: null,
             status: null
         }),
-        statusOptions: [
+        typeOptions: [
             {
                 label: 'Casa',
                 value: TypeEnum.CASA
@@ -108,7 +108,7 @@ export default {
                 value: TypeEnum.TERRENO
             },
         ],
-        typeOptions: [
+        statusOptions: [
             {
                 label: 'Disponível',
                 value: StatusEnum.DISPONIVEL
@@ -157,8 +157,5 @@ export default {
     margin-left: 0;
     width: 100%;
     background-color: #edf2fb;
-}
-.btn-danger {
-    margin-right: 12px;
 }
 </style>

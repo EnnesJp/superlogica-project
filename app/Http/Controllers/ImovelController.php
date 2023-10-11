@@ -10,6 +10,9 @@ use Throwable;
 
 class ImovelController extends Controller
 {
+    private const ALUGADO = 2;
+    private const VENDIDO = 3;
+
     public function exibirImoveis () {
         return Inertia::render('ImoveisList', [
             'imoveis' => Imovel::all()->map(function ($imovel) {
@@ -51,7 +54,25 @@ class ImovelController extends Controller
         return Redirect::route('imoveis.index')->with('message', 'Imóvel adicionado com sucesso!');
     }
 
-    public function edit (Imovel $imovel) {
+    public function detalhesImovel ($id) {
+        try {
+            $imovel = Imovel::find($id);
+        } catch (Throwable $e) {
+            return Redirect::route('imoveis.index')->with('error', 'Imóvel não encontrado!');
+        }
+
+        return Inertia::render('ImovelView', [
+            'imovel' => $imovel
+        ]);
+    }
+
+    public function edit ($id) {
+        try {
+            $imovel = Imovel::find($id);
+        } catch (Throwable $e) {
+            return Redirect::route('imoveis.index')->with('error', 'Imóvel não encontrado!');
+        }
+
         return Inertia::render('ImovelForm', [
             'imovel' => $imovel
         ]);
@@ -79,5 +100,29 @@ class ImovelController extends Controller
         }
 
         return Redirect::route('imoveis.index')->with('message', 'Imóvel removido com sucesso!');
+    }
+
+    public function alugaImovel ($id) {
+        try {
+            $imovel = Imovel::find($id);
+            $imovel->status = self::ALUGADO;
+            $imovel->save();
+        } catch (Throwable $e) {
+            return Redirect::route('imoveis.index')->with('error', 'Erro ao tentar alugar imóvel!');
+        }
+
+        return Redirect::route('imoveis.index')->with('message', 'Imóvel alugado com sucesso!');
+    }
+
+    public function vendeImovel ($id) {
+        try {
+            $imovel = Imovel::find($id);
+            $imovel->status = self::VENDIDO;
+            $imovel->save();
+        } catch (Throwable $e) {
+            return Redirect::route('imoveis.index')->with('error', 'Erro ao tentar comprar imóvel!');
+        }
+
+        return Redirect::route('imoveis.index')->with('message', 'Imóvel comprado com sucesso!');
     }
 }

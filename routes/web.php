@@ -25,6 +25,10 @@ Route::prefix('imoveis')->group(function () {
     Route::put('/{id}', [ImovelController::class, 'atualizarImovel']);
 
     Route::get('/create', [ImovelController::class, 'create']);
+    Route::get('{id}/view', [ImovelController::class, 'detalhesImovel'])->name('imoveis.view');
     Route::delete('/{id}', [ImovelController::class, 'removerImovel']);
-    Route::get('/{imovel}/edit', [ImovelController::class, 'edit']);
+    Route::get('/{id}/edit', [ImovelController::class, 'edit']);
+
+    Route::get('/{id}/sell', [ImovelController::class, 'vendeImovel']);
+    Route::get('/{id}/rent', [ImovelController::class, 'alugaImovel']);
 });

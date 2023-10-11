@@ -36,7 +36,7 @@
                             <td>{{ getTipoLabel(imovel.tipo) }}</td>
                             <td>{{ getStatusLabel(imovel.status) }}</td>
                             <td class="actions">
-                                <button class="btn btn-outline-info">View</button>
+                                <button class="btn btn-outline-info" @click="view(imovel.id)">View</button>
                                 <button class="btn btn-outline-primary" @click="edit(imovel.id)">Edit</button>
                                 <button class="btn btn-outline-danger" @click="destroy(imovel.id)">Delete</button>
                             </td>
@@ -55,8 +55,10 @@ import { router } from '@inertiajs/vue3';
 import StatusEnum from '../enums/StatusEnum'
 import TypeEnum from '../enums/TypeEnum'
 
+const BASE_ROUTE = '/imoveis'
+
 export default {
-    name: 'Home',
+    name: 'ImoveisList',
     props: {
         imoveis: {
             type: Object,
@@ -78,13 +80,16 @@ export default {
     },
     methods: {
         destroy(id) {
-            router.delete(`/imoveis/${id}`)
+            router.delete(`${BASE_ROUTE}/${id}`)
         },
         edit(id) {
-            router.get(`/imoveis/${id}/edit`)
+            router.get(`${BASE_ROUTE}/${id}/edit`)
         },
         create() {
-            router.get(`/imoveis/create`)
+            router.get(`${BASE_ROUTE}/create`)
+        },
+        view(id) {
+            router.get(`${BASE_ROUTE}/${id}/view`)
         },
         flash(message = null, error = null) {
             if (message) this.showMessage = true
