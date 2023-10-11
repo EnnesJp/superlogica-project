@@ -22,9 +22,9 @@ use Inertia\Inertia;
 Route::prefix('imoveis')->group(function () {
     Route::get('/', [ImovelController::class, 'exibirImoveis'])->name('imoveis.index');
     Route::post('/', [ImovelController::class, 'criarImovel']);
-    Route::put('/{imovel}', [ImovelController::class, 'atualizarImovel']);
+    Route::put('/{id}', [ImovelController::class, 'atualizarImovel']);
 
     Route::get('/create', [ImovelController::class, 'create']);
-    Route::delete('/{imovel}', [ImovelController::class, 'removerImovel']);
+    Route::delete('/{id}', [ImovelController::class, 'removerImovel']);
     Route::get('/{imovel}/edit', [ImovelController::class, 'edit']);
 });

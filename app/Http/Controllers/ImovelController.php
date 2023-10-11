@@ -6,6 +6,7 @@ use App\Models\Imovel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
+use Throwable;
 
 class ImovelController extends Controller
 {
@@ -40,7 +41,12 @@ class ImovelController extends Controller
 
     public function criarImovel (Request $request) {
         $validated = self::validateFields($request);
-        Imovel::create($validated);
+
+        try {
+            Imovel::create($validated);
+        } catch (Throwable $e) {
+            return Redirect::route('imoveis.index')->with('error', 'Erro ao tentar atualizar imóvel!');
+        }
 
         return Redirect::route('imoveis.index')->with('message', 'Imóvel adicionado com sucesso!');
     }
@@ -51,15 +57,26 @@ class ImovelController extends Controller
         ]);
     }
 
-    public function atualizarImovel(Request $request, Imovel $imovel) {
+    public function atualizarImovel(Request $request, $id) {
         $validated = self::validateFields($request);
-        $imovel->update($validated);
+
+        try {
+            $imovel = Imovel::find($id);
+            $imovel->update($validated);
+        } catch (Throwable $e) {
+            return Redirect::route('imoveis.index')->with('error', 'Erro ao tentar atualizar imóvel!');
+        }
 
         return Redirect::route('imoveis.index')->with('message', 'Informações atualizadas com sucesso!');
     }
 
-    public function removerImovel (Imovel $imovel) {
-        $imovel->delete();
+    public function removerImovel ($id) {
+        try {
+            $imovel = Imovel::find($id);
+            $imovel->delete();
+        } catch (Throwable $e) {
+            return Redirect::route('imoveis.index')->with('error', 'Erro ao tentar remover imóvel!');
+        }
 
         return Redirect::route('imoveis.index')->with('message', 'Imóvel removido com sucesso!');
     }
