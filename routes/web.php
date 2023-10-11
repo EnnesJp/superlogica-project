@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ImovelController;
+use Inertia\Inertia;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,5 +16,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return Inertia::render('Home');
 });
+
+Route::get('imoveis/create', [ImovelController::class, 'create']);
+
+Route::get('imoveis', [ImovelController::class, 'index'])->name('imoveis.index');
+Route::post('imoveis', [ImovelController::class, 'store']);
+
