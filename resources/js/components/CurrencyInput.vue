@@ -5,7 +5,7 @@
         class="form-control"
         :value="modelValue"
     />
-    </template>
+</template>
 
 <script>
 import { useCurrencyInput } from 'vue-currency-input'
@@ -23,3 +23,9 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+.form-control {
+    font-family: 'Montserrat', sans-serif;
+}
+</style>

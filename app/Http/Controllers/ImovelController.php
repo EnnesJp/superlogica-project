@@ -42,7 +42,7 @@ class ImovelController extends Controller
         $validated = self::validateFields($request);
         Imovel::create($validated);
 
-        return Redirect::route('imoveis.index')->with('message', 'Imovel adicionado com sucesso!');
+        return Redirect::route('imoveis.index')->with('message', 'Imóvel adicionado com sucesso!');
     }
 
     public function edit (Imovel $imovel) {
@@ -61,6 +61,6 @@ class ImovelController extends Controller
     public function removerImovel (Imovel $imovel) {
         $imovel->delete();
 
-        return Redirect::route('imoveis.index')->with('message', 'Imovel removido com sucesso!');
+        return Redirect::route('imoveis.index')->with('message', 'Imóvel removido com sucesso!');
     }
 }

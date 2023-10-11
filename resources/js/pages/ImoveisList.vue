@@ -6,31 +6,36 @@
     >
         <strong>{{ message }}</strong>
     </div>
-    <div class="card offset-3">
-        <table class="table table-bordered table-hover">
-            <thead>
-                <tr>
-                    <th scope="col">Endereço</th>
-                    <th scope="col">Preço</th>
-                    <th scope="col">Tipo</th>
-                    <th scope="col">Status</th>
-                    <th scope="col">Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="imovel in imoveis">
-                    <td>{{ imovel.endereco }}</td>
-                    <td>{{ formatPrice(imovel.preco) }}</td>
-                    <td>{{ getTipoLabel(imovel.tipo) }}</td>
-                    <td>{{ getStatusLabel(imovel.status) }}</td>
-                    <td class="actions">
-                        <button class="btn btn-outline-info">View</button>
-                        <button class="btn btn-outline-primary" @click="edit(imovel.id)">Edit</button>
-                        <button class="btn btn-outline-danger" @click="destroy(imovel.id)">Delete</button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+    <div class="wrapper">
+        <button class="btn btn-primary my-btn" @click="create()">
+            Novo Imóvel
+        </button>
+        <div class="card offset-3">
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">Endereço</th>
+                        <th scope="col">Preço</th>
+                        <th scope="col">Tipo</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="imovel in imoveis">
+                        <td>{{ imovel.endereco }}</td>
+                        <td class="price">{{ formatPrice(imovel.preco) }}</td>
+                        <td>{{ getTipoLabel(imovel.tipo) }}</td>
+                        <td>{{ getStatusLabel(imovel.status) }}</td>
+                        <td class="actions">
+                            <button class="btn btn-outline-info">View</button>
+                            <button class="btn btn-outline-primary" @click="edit(imovel.id)">Edit</button>
+                            <button class="btn btn-outline-danger" @click="destroy(imovel.id)">Delete</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </template>
 
@@ -62,13 +67,16 @@ export default {
         edit(id) {
             router.get(`/imoveis/${id}/edit`)
         },
+        create() {
+            router.get(`/imoveis/create`)
+        },
         flash(message) {
             this.show = true
             this.message = message
 
             setTimeout(() => {
                 this.hide()
-            },3000)
+            },4000)
         },
         hide() {
             this.show = false
@@ -122,12 +130,32 @@ export default {
 </script>
 
 <style scoped>
-.card {
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
     margin-top: 50px;
+}
+.card {
     margin-left: 0;
 }
 .actions {
     display: flex;
     justify-content: space-evenly;
+}
+.my-btn {
+    max-width: 150px;
+    align-self: flex-end;
+}
+.price {
+    font-family: 'Montserrat', sans-serif;
+}
+#feedbackMessage {
+    position: absolute;
+    max-width: 400px;
+    top: 5px;
+    left: 50%;
+    margin-left: -200px;
+    transition: 3;
 }
 </style>

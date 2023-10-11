@@ -1,7 +1,7 @@
 <template>
     <div class="card">
         <div class="card-header">
-            {{ imovel ? 'Editando Imovel' : 'Cadastre um novo Imovel' }}
+            {{ imovel ? 'Editando Imóvel' : 'Cadastre um novo Imóvel' }}
         </div>
         <div class="card-body">
             <form @submit.prevent="imovel ? editImovel() : createImovel()">
@@ -124,6 +124,9 @@ export default {
     editImovel() {
         router.put(`/imoveis/${this.imovel.id}`, this.form)
     },
+    home() {
+        router.get(`/imoveis`)
+    },
   },
   mounted() {
     if (this.imovel) {
@@ -141,5 +144,8 @@ export default {
 .card {
     margin-top: 50px;
     margin-left: 0;
+}
+.btn-danger {
+    margin-right: 12px;
 }
 </style>

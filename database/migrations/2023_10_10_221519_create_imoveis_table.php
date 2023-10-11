@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('imoveis', function (Blueprint $table) {
             $table->id();
             $table->string('endereco');
-            $table->float('preco',  8, 2);
+            $table->float('preco',  15, 2);
             $table->integer('tipo');
             $table->integer('status');
             $table->timestamps();
