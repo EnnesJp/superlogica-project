@@ -61,6 +61,6 @@ class ImovelController extends Controller
     public function removerImovel (Imovel $imovel) {
         $imovel->delete();
 
-        return Redirect::route('imoveis.index');
+        return Redirect::route('imoveis.index')->with('message', 'Imovel removido com sucesso!');
     }
 }

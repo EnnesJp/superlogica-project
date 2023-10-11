@@ -137,4 +137,9 @@ export default {
 
 </script>
 
-<style></style>
+<style scoped>
+.card {
+    margin-top: 50px;
+    margin-left: 0;
+}
+</style>
