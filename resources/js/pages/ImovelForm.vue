@@ -1,7 +1,7 @@
 <template>
     <div class="card">
         <div class="card-header">
-            {{ imovel ? 'Editando Imóvel' : 'Cadastre um novo Imóvel' }}
+            <strong>{{ imovel ? 'Editando Imóvel' : 'Cadastre um novo Imóvel' }}</strong>
         </div>
         <div class="card-body">
             <form @submit.prevent="imovel ? editImovel() : createImovel()">
@@ -144,6 +144,7 @@ export default {
 .card {
     margin-top: 50px;
     margin-left: 0;
+    background-color: #edf2fb;
 }
 .btn-danger {
     margin-right: 12px;

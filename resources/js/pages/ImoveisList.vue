@@ -138,6 +138,14 @@ export default {
 }
 .card {
     margin-left: 0;
+    background-color: #edf2fb;
+}
+th {
+    background-color: #edf2fb;
+}
+tbody {
+    width: 700px;
+    overflow-y: scroll;
 }
 .actions {
     display: flex;
