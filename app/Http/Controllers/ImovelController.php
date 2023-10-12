@@ -14,7 +14,7 @@ class ImovelController extends Controller
     private const VENDIDO = 3;
 
     public function exibirImoveis () {
-        return Inertia::render('ImoveisList', [
+        return Inertia::render('Dashboard', [
             'imoveis' => Imovel::all()->map(function ($imovel) {
                 return [
                     'id' => $imovel->id,
@@ -48,17 +48,17 @@ class ImovelController extends Controller
         try {
             Imovel::create($validated);
         } catch (Throwable $e) {
-            return Redirect::route('imoveis.index')->with('error', 'Erro ao tentar atualizar imóvel!');
+            return Redirect::route('dashboard')->with('error', 'Erro ao tentar atualizar imóvel!');
         }
 
-        return Redirect::route('imoveis.index')->with('message', 'Imóvel adicionado com sucesso!');
+        return Redirect::route('dashboard')->with('message', 'Imóvel adicionado com sucesso!');
     }
 
     public function detalhesImovel ($id) {
         try {
             $imovel = Imovel::find($id);
         } catch (Throwable $e) {
-            return Redirect::route('imoveis.index')->with('error', 'Imóvel não encontrado!');
+            return Redirect::route('dashboard')->with('error', 'Imóvel não encontrado!');
         }
 
         return Inertia::render('ImovelView', [
@@ -70,7 +70,7 @@ class ImovelController extends Controller
         try {
             $imovel = Imovel::find($id);
         } catch (Throwable $e) {
-            return Redirect::route('imoveis.index')->with('error', 'Imóvel não encontrado!');
+            return Redirect::route('dashboard')->with('error', 'Imóvel não encontrado!');
         }
 
         return Inertia::render('ImovelForm', [
@@ -85,10 +85,10 @@ class ImovelController extends Controller
             $imovel = Imovel::find($id);
             $imovel->update($validated);
         } catch (Throwable $e) {
-            return Redirect::route('imoveis.index')->with('error', 'Erro ao tentar atualizar imóvel!');
+            return Redirect::route('dashboard')->with('error', 'Erro ao tentar atualizar imóvel!');
         }
 
-        return Redirect::route('imoveis.index')->with('message', 'Informações atualizadas com sucesso!');
+        return Redirect::route('dashboard')->with('message', 'Informações atualizadas com sucesso!');
     }
 
     public function removerImovel ($id) {
@@ -96,10 +96,10 @@ class ImovelController extends Controller
             $imovel = Imovel::find($id);
             $imovel->delete();
         } catch (Throwable $e) {
-            return Redirect::route('imoveis.index')->with('error', 'Erro ao tentar remover imóvel!');
+            return Redirect::route('dashboard')->with('error', 'Erro ao tentar remover imóvel!');
         }
 
-        return Redirect::route('imoveis.index')->with('message', 'Imóvel removido com sucesso!');
+        return Redirect::route('dashboard')->with('message', 'Imóvel removido com sucesso!');
     }
 
     public function alugaImovel ($id) {
@@ -108,10 +108,10 @@ class ImovelController extends Controller
             $imovel->status = self::ALUGADO;
             $imovel->save();
         } catch (Throwable $e) {
-            return Redirect::route('imoveis.index')->with('error', 'Erro ao tentar alugar imóvel!');
+            return Redirect::route('dashboard')->with('error', 'Erro ao tentar alugar imóvel!');
         }
 
-        return Redirect::route('imoveis.index')->with('message', 'Imóvel alugado com sucesso!');
+        return Redirect::route('dashboard')->with('message', 'Imóvel alugado com sucesso!');
     }
 
     public function vendeImovel ($id) {
@@ -120,9 +120,9 @@ class ImovelController extends Controller
             $imovel->status = self::VENDIDO;
             $imovel->save();
         } catch (Throwable $e) {
-            return Redirect::route('imoveis.index')->with('error', 'Erro ao tentar comprar imóvel!');
+            return Redirect::route('dashboard')->with('error', 'Erro ao tentar comprar imóvel!');
         }
 
-        return Redirect::route('imoveis.index')->with('message', 'Imóvel comprado com sucesso!');
+        return Redirect::route('dashboard')->with('message', 'Imóvel comprado com sucesso!');
     }
 }

@@ -1,46 +1,59 @@
-<template>
-    <div class="wrapper">
-        <button class="btn" @click="home()">
-            <svg xmlns="http://www.w3.org/2000/svg" height="1.5em" viewBox="0 0 320 512" fill="#FFF">
-                <path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l192 192c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256 246.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-192 192z"/>
-            </svg>
-        </button>
-        <div class="card">
-            <h5 class="card-header">
-                <span>Imovel {{ imovel.id }}</span>
-
-                <div v-if="isAvailable(imovel.status)" class="buttons">
-                    <a class="btn btn-info" @click="rent(imovel.id)">Alugar</a>
-                    <a class="btn btn-success" @click="sell(imovel.id)">Vender</a>
-                </div>
-            </h5>
-            <div class="card-body">
-                <div class="imovel-infos top">
-                    <div>
-                        <h5 class="card-title">Endereço</h5>
-                        <p class="card-text">{{ imovel.endereco }}</p>
-                    </div>
-                    <div>
-                        <h5 class="card-title">Preço</h5>
-                        <p class="card-text price">{{ formatPrice(imovel.preco) }}</p>
-                    </div>
-                </div>
-                <div class="imovel-infos">
-                    <h5 class="card-title">Tipo:</h5>
-                    <p class="card-text">{{ getTipoLabel(imovel.tipo) }}</p>
-                    <h5 class="card-title">Status:</h5>
-                    <p class="card-text status" :class="isAvailable(imovel.status) ? 'disponivel' : ''">{{ getStatusLabel(imovel.status) }}</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</template>
-
-<script>
+<script setup>
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { router } from '@inertiajs/vue3';
 import StatusEnum from '../enums/StatusEnum'
 import TypeEnum from '../enums/TypeEnum'
+import PrimaryButton from '@/Components/PrimaryButton.vue';
+import SecondaryButton from '@/Components/SecondaryButton.vue';
+</script>
 
+<template>
+    <AuthenticatedLayout>
+        <template #header>
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">View Imovel</h2>
+        </template>
+
+        <div class="wrapper">
+            <div class="card">
+                <h5 class="card-header">
+                    <strong>Imovel {{ imovel.id }}</strong>
+
+                    <div v-if="isAvailable(imovel.status)" class="buttons">
+                        <SecondaryButton class="ml-4" @click="rent(imovel.id)">
+                            Alugar
+                        </SecondaryButton>
+
+                        <PrimaryButton class="ml-4" @click="sell(imovel.id)">
+                            Vender
+                        </PrimaryButton>
+                    </div>
+                </h5>
+
+                <div class="card-body">
+                    <div class="imovel-infos top">
+                        <div>
+                            <h5 class="card-title">Endereço</h5>
+                            <p class="card-text">{{ imovel.endereco }}</p>
+                        </div>
+                        <div>
+                            <h5 class="card-title">Preço</h5>
+                            <p class="card-text price">{{ formatPrice(imovel.preco) }}</p>
+                        </div>
+                    </div>
+
+                    <div class="imovel-infos">
+                        <h5 class="card-title">Tipo:</h5>
+                        <p class="card-text">{{ getTipoLabel(imovel.tipo) }}</p>
+                        <h5 class="card-title">Status:</h5>
+                        <p class="card-text status" :class="isAvailable(imovel.status) ? 'disponivel' : ''">{{ getStatusLabel(imovel.status) }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </AuthenticatedLayout>
+</template>
+
+<script>
 const BASE_ROUTE = '/imoveis'
 
 export default {
@@ -116,7 +129,6 @@ export default {
 .card {
     margin-left: 0;
     width: 100%;
-    background-color: #edf2fb;
 }
 .card-body {
     padding: 20px;
@@ -139,7 +151,9 @@ export default {
     padding-right: 40px;
     margin-bottom: 40px;
 }
-
+.imovel-infos h5 {
+    font-weight: bold;
+}
 .card-text.status {
     border: 2px solid gray;
     padding: 4px;

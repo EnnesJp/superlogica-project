@@ -1,75 +1,96 @@
-<template>
-    <div class="wrapper">
-        <button class="btn" @click="home()">
-            <svg xmlns="http://www.w3.org/2000/svg" height="1.5em" viewBox="0 0 320 512" fill="#FFF">
-                <path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l192 192c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256 246.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-192 192z"/>
-            </svg>
-        </button>
-        <div class="card">
-            <div class="card-header">
-                <strong>{{ imovel ? 'Editando Imóvel' : 'Cadastre um novo Imóvel' }}</strong>
-            </div>
-            <div class="card-body">
-                <form @submit.prevent="imovel ? editImovel() : createImovel()">
-                    <div class="mb-3">
-                        <label class="form-label">
-                            Endereço
-                        </label>
-                        <input
-                            v-model="form.endereco"
-                            type="text"
-                            class="form-control"
-                        >
-                        <div class="text-danger text-xs" v-if="errors.endereco">{{ errors.endereco }}</div>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">
-                            Preço
-                        </label>
-                        <CurrencyInput
-                            v-model="form.preco"
-                            :options="{ currency: 'BRL' }"
-                        />
-                        <div class="text-danger text-xs" v-if="errors.preco">{{ errors.preco }}</div>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Tipo</label>
-                        <select v-model="form.tipo" class="form-select">
-                            <option
-                                v-for="tipo in typeOptions"
-                                :value="tipo.value"
-                            >
-                                {{ tipo.label }}
-                            </option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Status</label>
-                        <select v-model="form.status" class="form-select">
-                            <option
-                                v-for="status in statusOptions"
-                                :value="status.value"
-                            >
-                                {{ status.label }}
-                            </option>
-                        </select>
-                    </div>
-                    <button type="submit" class="btn btn-primary">
-                        {{ imovel ? 'Salvar' : 'Finalizar Cadastro' }}
-                    </button>
-                </form>
-            </div>
-        </div>
-    </div>
-</template>
-
-<script>
-
-import { useForm } from '@inertiajs/vue3';
-import { router } from '@inertiajs/vue3';
+<script setup>
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import { useForm, router } from '@inertiajs/vue3';
 import StatusEnum from '../enums/StatusEnum'
 import TypeEnum from '../enums/TypeEnum'
 import CurrencyInput from '../components/CurrencyInput.vue'
+import InputError from '@/Components/InputError.vue';
+import InputLabel from '@/Components/InputLabel.vue';
+import TextInput from '@/Components/TextInput.vue';
+import PrimaryButton from '@/Components/PrimaryButton.vue';
+</script>
+
+<template>
+    <AuthenticatedLayout>
+        <template #header>
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Novo Imovel</h2>
+        </template>
+
+        <div class="wrapper">
+            <div class="card">
+                <div class="card-header">
+                    <strong>{{ imovel ? 'Editando Imóvel' : 'Cadastre um novo Imóvel' }}</strong>
+                </div>
+
+                <div class="card-body">
+                    <form @submit.prevent="imovel ? editImovel() : createImovel()">
+                        <div class="mb-3">
+                            <InputLabel for="endereco" value="Endereço" />
+
+                            <TextInput
+                                id="endereco"
+                                type="text"
+                                class="mt-1 block w-full"
+                                v-model="form.endereco"
+                                required
+                                autofocus
+                                autocomplete="endereco"
+                            />
+
+                            <InputError class="mt-2" :message="errors.endereco" />
+                        </div>
+
+                        <div class="mb-3">
+                            <InputLabel for="preco" value="Preço" />
+
+                            <CurrencyInput
+                                v-model="form.preco"
+                                :options="{ currency: 'BRL' }"
+                            />
+
+                            <InputError class="mt-2" :message="errors.preco" />
+                        </div>
+
+                        <div class="mb-3">
+                            <InputLabel for="tipo" value="Tipo" />
+
+                            <select v-model="form.tipo" class="form-select">
+                                <option
+                                    v-for="tipo in typeOptions"
+                                    :value="tipo.value"
+                                >
+                                    {{ tipo.label }}
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <InputLabel for="status" value="Status" />
+
+                            <select v-model="form.status" class="form-select">
+                                <option
+                                    v-for="status in statusOptions"
+                                    :value="status.value"
+                                >
+                                    {{ status.label }}
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="button-wrapper">
+                            <PrimaryButton class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+                                {{ imovel ? 'Salvar' : 'Finalizar Cadastro' }}
+                            </PrimaryButton>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </AuthenticatedLayout>
+</template>
+
+<script>
+const BASE_ROUTE = '/imoveis'
 
 export default {
   name: 'ImovelForm',
@@ -126,13 +147,10 @@ export default {
   },
   methods: {
     createImovel() {
-        router.post('/imoveis', this.form)
+        router.post(BASE_ROUTE, this.form)
     },
     editImovel() {
-        router.put(`/imoveis/${this.imovel.id}`, this.form)
-    },
-    home() {
-        router.get(`/imoveis`)
+        router.put(`${BASE_ROUTE}/${this.imovel.id}`, this.form)
     },
   },
   mounted() {
@@ -156,6 +174,20 @@ export default {
 .card {
     margin-left: 0;
     width: 100%;
-    background-color: #edf2fb;
+}
+.form-control, .form-select {
+    border-radius: 8px;
+}
+.btn-primary {
+    color: black;
+}
+.btn-primary:hover {
+    color: white;
+}
+.button-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 40px;
 }
 </style>

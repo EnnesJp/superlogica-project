@@ -1,60 +1,58 @@
-<template>
-    <div
-        v-if="showMessage"
-        id="feedbackMessage"
-        class="alert alert-success text-center"
-    >
-        <strong>{{ message }}</strong>
-    </div>
-    <div
-        v-if="showError"
-        id="feedbackMessage"
-        class="alert alert-danger text-center"
-    >
-        <strong>{{ error }}</strong>
-    </div>
-    <div class="wrapper">
-        <button class="btn btn-primary my-btn" @click="create()">
-            Novo Imóvel
-        </button>
-        <div class="card offset-3">
-            <div class="table-responsive">
-                <table class="table table-bordered table-hover">
-                    <thead>
-                        <tr>
-                            <th scope="col">Endereço</th>
-                            <th scope="col">Preço</th>
-                            <th scope="col">Tipo</th>
-                            <th scope="col">Status</th>
-                            <th scope="col">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="imovel in imoveis">
-                            <td>{{ imovel.endereco }}</td>
-                            <td class="price">{{ formatPrice(imovel.preco) }}</td>
-                            <td>{{ getTipoLabel(imovel.tipo) }}</td>
-                            <td>{{ getStatusLabel(imovel.status) }}</td>
-                            <td class="actions">
-                                <button class="btn btn-outline-info" @click="view(imovel.id)">View</button>
-                                <button class="btn btn-outline-primary" @click="edit(imovel.id)">Edit</button>
-                                <button class="btn btn-outline-danger" @click="destroy(imovel.id)">Delete</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-</template>
-
-<script>
-
-import { usePage } from '@inertiajs/vue3'
-import { router } from '@inertiajs/vue3';
+<script setup>
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import { Head, usePage, router } from '@inertiajs/vue3';
 import StatusEnum from '../enums/StatusEnum'
 import TypeEnum from '../enums/TypeEnum'
+import PrimaryButton from '@/Components/PrimaryButton.vue';
+</script>
 
+<template>
+    <AuthenticatedLayout>
+        <template #header>
+            <div class="header">
+                <h2 class="font-semibold text-xl text-gray-800 leading-tight">Dashboard</h2>
+
+                <PrimaryButton class="ml-4" @click="create()">
+                    Novo Imóvel
+                </PrimaryButton>
+            </div>
+        </template>
+
+        <div class="wrapper">
+            <div class="card offset-3">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">Endereço</th>
+                                <th scope="col">Preço</th>
+                                <th scope="col">Tipo</th>
+                                <th scope="col">Status</th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="imovel in imoveis">
+                                <td>{{ imovel.endereco }}</td>
+                                <td class="price">{{ formatPrice(imovel.preco) }}</td>
+                                <td>{{ getTipoLabel(imovel.tipo) }}</td>
+                                <td>{{ getStatusLabel(imovel.status) }}</td>
+                                <td class="actions">
+                                    <button class="btn btn-outline-info" @click="view(imovel.id)">View</button>
+                                    <button class="btn btn-outline-primary" @click="edit(imovel.id)">Edit</button>
+                                    <button class="btn btn-outline-danger" @click="destroy(imovel.id)">Delete</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </AuthenticatedLayout>
+</template>
+
+
+<script>
 const BASE_ROUTE = '/imoveis'
 
 export default {
@@ -158,6 +156,11 @@ export default {
 </script>
 
 <style scoped>
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
 .wrapper {
     display: flex;
     flex-direction: column;
@@ -192,13 +195,6 @@ thead {
 }
 .price {
     font-family: 'Montserrat', sans-serif;
-}
-#feedbackMessage {
-    position: absolute;
-    max-width: 400px;
-    top: 5px;
-    left: 50%;
-    margin-left: -200px;
 }
 /* width */
 ::-webkit-scrollbar {
