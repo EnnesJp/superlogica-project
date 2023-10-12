@@ -4,6 +4,9 @@ import { Head, usePage, router } from '@inertiajs/vue3';
 import StatusEnum from '../enums/StatusEnum'
 import TypeEnum from '../enums/TypeEnum'
 import PrimaryButton from '@/Components/PrimaryButton.vue';
+import Trash from '@/Components/Trash.vue';
+import View from '@/Components/View.vue';
+import Pencil from '@/Components/Pencil.vue';
 </script>
 
 <template>
@@ -38,9 +41,15 @@ import PrimaryButton from '@/Components/PrimaryButton.vue';
                                 <td>{{ getTipoLabel(imovel.tipo) }}</td>
                                 <td>{{ getStatusLabel(imovel.status) }}</td>
                                 <td class="actions">
-                                    <button class="btn btn-outline-info" @click="view(imovel.id)">View</button>
-                                    <button class="btn btn-outline-primary" @click="edit(imovel.id)">Edit</button>
-                                    <button class="btn btn-outline-danger" @click="destroy(imovel.id)">Delete</button>
+                                    <button class="btn btn-outline-info" @click="view(imovel.id)">
+                                        <View/>
+                                    </button>
+                                    <button class="btn btn-outline-primary" @click="edit(imovel.id)">
+                                        <Pencil/>
+                                    </button>
+                                    <button class="btn btn-outline-danger" @click="destroy(imovel.id)">
+                                        <Trash/>
+                                    </button>
                                 </td>
                             </tr>
                         </tbody>
